@@ -20,8 +20,9 @@ export const navRoutes = [
     element: <Level2 />,
   },
   {
-    path: "/item",
+    path: "/item/:id",
     name: "item",
+    component: { Item },
     element: <Item />,
   },
 ];

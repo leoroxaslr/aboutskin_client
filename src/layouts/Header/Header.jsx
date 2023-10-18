@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import http from "../../lib/http";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-
+const cartfromlocal = JSON.parse(localStorage.getItem("cart") || "[]");
 const Header = () => {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(cartfromlocal);
   const [searchQuery, setSearchQuery] = useState("");
   const [token, setToken] = useState(false);
   const [numberOfItemsInCart, setNumberOfItemsInCart] = useState(0);
@@ -54,6 +54,7 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
     setNumberOfItemsInCart(calculateNumberOfItemsInCart(cartItems));
   }, [cartItems]);
 
@@ -84,7 +85,6 @@ const Header = () => {
     });
 
     setCartItems(updatedCartItems);
-
     api.put(`/cart/decrement-quantity/${productId}`);
     getCartItems();
   };
@@ -237,7 +237,7 @@ const Header = () => {
           </div>
         </Dialog>
       </Transition.Root>
-      <div className="navbar bg-base-100 shadow-md">
+      <div className="navbar bg-base-100  w-full mx-auto">
         <div className="navbar-start">
           <Link to="/" className="btn btn-ghost normal-case text-xl">
             AboutSkin
@@ -350,9 +350,9 @@ const Header = () => {
               </li>
               <li>
                 {token ? (
-                  <button onClick={handleLogout}>logout</button>
+                  <button onClick={handleLogout}>Logout</button>
                 ) : (
-                  <Link to="/login">login</Link>
+                  <Link to="/login">Login</Link>
                 )}
               </li>
             </ul>

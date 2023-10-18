@@ -75,7 +75,7 @@ const Login = () => {
             <div className="flex justify-end">
               <Link
                 as={Link}
-                to="/signin"
+                to="/register"
                 className="pl-1 font-medium text-gray-800 hover:underline"
               >
                 Login here

@@ -25,6 +25,7 @@ const Level2 = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchQuery = searchParams.get("q");
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     getCategories();
@@ -98,6 +99,7 @@ const Level2 = () => {
         await api.post("/cart", body);
         window.dispatchEvent(new Event("getCartItems"));
         console.log("productId");
+        setShowToast(true);
       } catch (e) {
         console.log(e);
       }
@@ -118,23 +120,39 @@ const Level2 = () => {
 
   return (
     <>
+      <div>
+        {showToast && (
+          <Toast
+            message={
+              <div className="alert shadow-lg">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  className="stroke-info shrink-0 w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                <div>
+                  <h3 className="font-bold">Added to Cart!</h3>
+                  <div className="text-xs">
+                    The item has been added to your cart.
+                  </div>
+                </div>
+              </div>
+            }
+            onClose={() => setShowToast(false)}
+          />
+        )}
+      </div>
       <div className="container md:mx-auto p-4 md:flex ">
         <div className="w-full p-4 sm:w-2/5 md:w-2/5 lg:w-1/5 xl:w-1/5">
           <h2 className="text-xl font-bold tracking-tight text-gray-900 flex">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mt-1 "
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
             SEARCH FILTER
           </h2>
           <div className="divider"></div>
@@ -261,8 +279,8 @@ const Level2 = () => {
             </div>
           </div>
         </div>
-        <div className="w-full p-4">
-          <div className=" justify-between flex">
+        <div className="w-full ">
+          <div className="flex flex-none w-full">
             <div className=" p-4 rounded-lg flex">
               <label className="block mb-2 font-bold tracking-tight">
                 Sort by:
@@ -303,7 +321,7 @@ const Level2 = () => {
               </div>
             </div>
 
-            <div className="join sm:my-auto justify-between xl:mr-9">
+            <div className="join sm:my-auto xl:mr-9">
               <button
                 className="join-item btn btn-base-100"
                 onClick={loadPrevPage}
@@ -319,48 +337,70 @@ const Level2 = () => {
               </button>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {products.map((product, index) => {
-              return (
-                <a key={product.id} href={product.href} className="group">
-                  <div key={index} className="flex-shrink-0 w-64">
-                    <div className="aspect-h-1 aspect-w-1 w-full p-4 rounded-md lg:aspect-none group-hover:opacity-75 ">
-                      <img
-                        src={product.image}
-                        alt={product.image}
-                        className="h-full w-full object-cover object-center group-hover:opacity-75 rounded-xl"
-                      />
-                      <div className="flex justify-between">
-                        <div className="pt-1">
-                          <p className="text-sm text-gray-700 font-semibold tracking-tight">
-                            {product.name}
-                          </p>
-                          <p className="text-sm text-gray-700 font-light">
-                            ₱{product.price}
-                          </p>
-                        </div>
-                        <div className="pt-4 pr-1">
-                          <button onClick={() => addToCart(product.id)}>
-                            <svg
-                              className="w-5 h-5 text-gray-600 hover:text-primary"
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="currentColor"
-                              viewBox="0 0 18 21"
-                            >
-                              <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
-                            </svg>
-                          </button>
+          <div className="mx-auto relative">
+            <div className="grid grid-cols-1 gap-x-1 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-1">
+              {products &&
+                products.map((product, index) => (
+                  <Link
+                    key={product.id}
+                    to={`/item/${product.id}`}
+                    className="group"
+                  >
+                    <div key={index} className="flex-shrink-0 w-full sm:w-64">
+                      <div className="aspect-h-1 aspect-w-1 w-full p-4 rounded-md lg:aspect-none group-hover:opacity-75 ">
+                        <img
+                          src={product.image}
+                          alt={product.image}
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center group-hover:opacity-75 rounded-xl"
+                        />
+                        <div className="flex justify-between">
+                          <div className="pt-1">
+                            <p className="text-sm text-gray-700 font-semibold tracking-tight">
+                              {product.name}
+                            </p>
+                            <p className="text-sm text-gray-700 font-light">
+                              ₱{product.price}
+                            </p>
+                          </div>
+                          <div className="pt-4 pr-1">
+                            <button onClick={() => addToCart(product.id)}>
+                              <svg
+                                className="w-5 h-5 text-gray-600 hover:text-primary"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                viewBox="0 0 18 21"
+                              >
+                                <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </a>
-              );
-            })}
+                  </Link>
+                ))}
+            </div>
           </div>
-
+          {/* <div
+            className="join sm:my-auto 
+           right-0 xl:mr-9"
+          >
+            <button
+              className="join-item btn btn-base-100"
+              onClick={loadPrevPage}
+            >
+              «
+            </button>
+            <button className="join-item btn btn-base-100">{page}</button>
+            <button
+              className="join-item btn btn-base-100"
+              onClick={loadNextPage}
+            >
+              »
+            </button>
+          </div> */}
           <Pagination
             count={pageCount}
             page={page}

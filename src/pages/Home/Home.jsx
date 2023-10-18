@@ -23,10 +23,23 @@ const Home = () => {
     setProducts(response.data?.data);
   }
 
-  const handleAddToCart = () => {
-    setShowToast(true);
-  };
-
+  async function handleAddToCart(productId) {
+    if (localStorage.getItem("token")) {
+      try {
+        const body = {
+          product_id: productId,
+        };
+        await api.post("/cart", body);
+        window.dispatchEvent(new Event("getCartItems"));
+        console.log("productId");
+        setShowToast(true);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      navigate("/login");
+    }
+  }
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -64,7 +77,6 @@ const Home = () => {
                     The item has been added to your cart.
                   </div>
                 </div>
-                <button className="btn">See</button>
               </div>
             }
             onClose={() => setShowToast(false)}
@@ -104,10 +116,12 @@ const Home = () => {
             <div className="flex items-center space-x-4 overflow-x-auto py-2 h-[380px]">
               {products.map((product) => (
                 <div key={product.id} className="flex-shrink-0 w-64">
+                  {/* <Link to={`/item/${product.id}`}></Link> */}
                   <div className="aspect-h-1 aspect-w-1 w-full p-4 rounded-md lg:aspect-none group-hover:opacity-75 ">
                     <img
                       src={product.image}
                       alt={product.name}
+                      loading="lazy"
                       className="w-full h-full object-cover rounded-sm"
                     />
                     <div className="flex justify-between">
@@ -120,7 +134,7 @@ const Home = () => {
                         </p>
                       </div>
                       <div className="pt-4 pr-1">
-                        <button onClick={handleAddToCart}>
+                        <button onClick={() => handleAddToCart(product.id)}>
                           <svg
                             className="w-5 h-5 text-gray-600 hover:text-primary"
                             aria-hidden="true"
@@ -143,12 +157,14 @@ const Home = () => {
             Discover more
           </h2>
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {limitedProducts.map((product) => (
+            {products.map((product) => (
               <div key={product.id} className="group relative">
+                <Link to={`/item/${product.id}`}></Link>
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-sm bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                   <img
                     src={product.image}
                     alt={product.image}
+                    loading="lazy"
                     className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                   />
                 </div>
@@ -163,7 +179,7 @@ const Home = () => {
                   <div className="pt-1 pr-2">
                     <button
                       className="btn bg-transparent border-0"
-                      onClick={handleAddToCart}
+                      onClick={() => handleAddToCart(product.id)}
                     >
                       Add to cart
                       <svg
@@ -181,8 +197,10 @@ const Home = () => {
               </div>
             ))}
           </div>
-          <div className="grid content-center pt-4">
-            <button className="btn btn-secondary">Show more</button>
+          <div className=" justify-center flex mx-auto pt-4">
+            <Link to="/store">
+              <button className="btn btn-wide btn-primary">Show more</button>
+            </Link>
           </div>
         </div>
       </div>
