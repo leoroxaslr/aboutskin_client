@@ -25,7 +25,7 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(user.data.user));
       window.dispatchEvent(new Event("authenticated"));
       navigate("/");
-      console.log(user.data.user, user.data.token);
+      window.location.reload(false);
     } catch (e) {
       setError(e.response.data.message);
     }

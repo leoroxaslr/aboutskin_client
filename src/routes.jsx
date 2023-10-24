@@ -7,6 +7,9 @@ import Userdash from "./pages/Profile/Settings/Userdash";
 import Orders from "./pages/Profile/Settings/Orders";
 import React from "react";
 import Item from "./pages/Product/Item";
+import Checkout from "./pages/Checkout/Checkout";
+import Admin from "./pages/Profile/Settings/Admin";
+import ProcessOrder from "./pages/Profile/Settings/ProcessOrder";
 
 export const navRoutes = [
   {
@@ -18,6 +21,11 @@ export const navRoutes = [
     path: "/store",
     name: "store",
     element: <Level2 />,
+  },
+  {
+    path: "/checkout",
+    name: "checkout",
+    element: <Checkout />,
   },
   {
     path: "/item/:id",
@@ -45,9 +53,19 @@ export const profileRoute = {
   element: <Profile />,
   children: [
     {
-      path: "Userdash",
+      path: "userdash",
       name: "Userdash",
       element: <Userdash />,
+    },
+    {
+      path: "admin",
+      name: "Admin",
+      element: <Admin />,
+    },
+    {
+      path: "admin/orders",
+      name: "Admin",
+      element: <ProcessOrder />,
     },
     {
       path: "orders",

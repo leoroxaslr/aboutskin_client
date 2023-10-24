@@ -11,9 +11,11 @@ const Level2 = () => {
   const api = http({
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   });
+  const imageLink = import.meta.env.VITE_API;
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(0);
+  const [rating, setRating] = useState();
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [newPriceRange, setNewPriceRange] = useState([0, 1000]);
   const [pageCount, setPageCount] = useState(0);
@@ -35,6 +37,7 @@ const Level2 = () => {
 
   useEffect(() => {
     getFilteredProducts();
+    console.log(rating);
     return () => {};
   }, [category, priceRange, sort, asc, search]);
 
@@ -57,12 +60,14 @@ const Level2 = () => {
   }, [searchQuery]);
 
   async function getFilteredProducts(_, page = 1) {
+    console.log(sort);
     const options = {
       params: {
         search,
         page,
-        sort,
+        sort: sort === "rating" ? "rating" : "none",
         category,
+        rating,
         asc,
         "min-price": priceRange[0],
         "max-price": priceRange[1],
@@ -117,6 +122,12 @@ const Level2 = () => {
       setPage(page - 1);
     }
   };
+  const handleRatingSort = (selectedRating) => {
+    // Update the sort state to "rating" and the rating state to the selected rating value
+    setSort("rating");
+    setRating(selectedRating);
+    getFilteredProducts(); // Trigger product sorting
+  };
 
   return (
     <>
@@ -158,35 +169,46 @@ const Level2 = () => {
           <div className="divider"></div>
           <div className=" p-4 rounded-lg">
             <label className="block mb-2 font-light tracking-tight">
-              {" "}
               By Rating
             </label>
             <div className="rating">
-              <input
-                type="radio"
-                name="rating-2"
-                className="mask mask-star-2 bg-success"
-              />
-              <input
-                type="radio"
-                name="rating-2"
-                className="mask mask-star-2 bg-success"
-              />
-              <input
-                type="radio"
-                name="rating-2"
-                className="mask mask-star-2 bg-success"
-              />
-              <input
-                type="radio"
-                name="rating-2"
-                className="mask mask-star-2 bg-success"
-              />
-              <input
-                type="radio"
-                name="rating-2"
-                className="mask mask-star-2 bg-success"
-              />
+              <div className="rating">
+                <input
+                  type="radio"
+                  name="rating-2"
+                  value="1"
+                  onClick={() => handleRatingSort(1)}
+                  className="mask mask-star-2 bg-success"
+                />
+                <input
+                  type="radio"
+                  name="rating-2"
+                  value="2"
+                  onClick={() => handleRatingSort(2)}
+                  className="mask mask-star-2 bg-success"
+                />
+                <input
+                  type="radio"
+                  name="rating-2"
+                  value="3"
+                  onClick={() => handleRatingSort(3)}
+                  className="mask mask-star-2 bg-success"
+                />
+                <input
+                  type="radio"
+                  name="rating-2"
+                  value="4"
+                  onClick={() => handleRatingSort(4)}
+                  className="mask mask-star-2 bg-success"
+                />
+                <input
+                  type="radio"
+                  name="rating-2"
+                  value="5"
+                  onClick={() => handleRatingSort(5)}
+                  className="mask mask-star-2 bg-success"
+                />
+              </div>
             </div>
           </div>
           <div className="divider"></div>
@@ -280,8 +302,8 @@ const Level2 = () => {
           </div>
         </div>
         <div className="w-full ">
-          <div className="flex flex-none w-full">
-            <div className=" p-4 rounded-lg flex">
+          <div className="flex flex-none w-11/12 justify-between">
+            <div className=" p-4 rounded-lg flex ">
               <label className="block mb-2 font-bold tracking-tight">
                 Sort by:
               </label>
@@ -321,86 +343,67 @@ const Level2 = () => {
               </div>
             </div>
 
-            <div className="join sm:my-auto xl:mr-9">
+            <div className="join sm:my-auto shadow-sm">
               <button
-                className="join-item btn btn-base-100"
+                className="join-item btn btn-base-100 "
                 onClick={loadPrevPage}
               >
-                «
+                ←
               </button>
               <button className="join-item btn btn-base-100">{page}</button>
               <button
                 className="join-item btn btn-base-100"
                 onClick={loadNextPage}
               >
-                »
+                →
               </button>
             </div>
           </div>
-          <div className="mx-auto relative">
+          <div className="mx-auto">
             <div className="grid grid-cols-1 gap-x-1 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-1">
               {products &&
                 products.map((product, index) => (
-                  <Link
-                    key={product.id}
-                    to={`/item/${product.id}`}
-                    className="group"
-                  >
-                    <div key={index} className="flex-shrink-0 w-full sm:w-64">
-                      <div className="aspect-h-1 aspect-w-1 w-full p-4 rounded-md lg:aspect-none group-hover:opacity-75 ">
+                  <div key={index} className="flex-shrink-0 w-full sm:w-64">
+                    <div className="aspect-h-1 aspect-w-1 w-full p-4 rounded-md lg:aspect-none group-hover:opacity-75 ">
+                      <Link
+                        key={product.id}
+                        to={`/item/${product.id}`}
+                        className="group"
+                      >
                         <img
-                          src={product.image}
+                          src={
+                            product.image
+                              ? `${imageLink}/public/${product.image}`
+                              : ""
+                          }
                           alt={product.image}
                           loading="lazy"
                           className="h-full w-full object-cover object-center group-hover:opacity-75 rounded-xl"
                         />
-                        <div className="flex justify-between">
-                          <div className="pt-1">
-                            <p className="text-sm text-gray-700 font-semibold tracking-tight">
-                              {product.name}
-                            </p>
-                            <p className="text-sm text-gray-700 font-light">
-                              ₱{product.price}
-                            </p>
-                          </div>
-                          <div className="pt-4 pr-1">
-                            <button onClick={() => addToCart(product.id)}>
-                              <svg
-                                className="w-5 h-5 text-gray-600 hover:text-primary"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor"
-                                viewBox="0 0 18 21"
-                              >
-                                <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
-                              </svg>
-                            </button>
-                          </div>
+                      </Link>
+                      <div className="flex justify-between">
+                        <div className="pt-1">
+                          <p className="text-sm text-gray-700 font-semibold tracking-tight">
+                            {product.name}
+                          </p>
+                          <p className="text-sm text-gray-700 font-light">
+                            ₱{product.price}
+                          </p>
+                        </div>
+                        <div className="pt-1 pr-1">
+                          <button
+                            className="btn bg-transparent text-xs mx-0 px-0 hover:bg-transparent hover:text-primary transition-colors font-normal border-0 "
+                            onClick={() => addToCart(product.id)}
+                          >
+                            Add to cart
+                          </button>
                         </div>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 ))}
             </div>
           </div>
-          {/* <div
-            className="join sm:my-auto 
-           right-0 xl:mr-9"
-          >
-            <button
-              className="join-item btn btn-base-100"
-              onClick={loadPrevPage}
-            >
-              «
-            </button>
-            <button className="join-item btn btn-base-100">{page}</button>
-            <button
-              className="join-item btn btn-base-100"
-              onClick={loadNextPage}
-            >
-              »
-            </button>
-          </div> */}
           <Pagination
             count={pageCount}
             page={page}
