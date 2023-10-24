@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import http from "../../lib/http";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Heeroimage from "../../assets/images/Hero/Heroimage.svg";
 
@@ -25,7 +26,7 @@ const Registration = () => {
   const [phoneNum, setPhoneNum] = useState("");
   const [address, setAddress] = useState("");
   const [postal, setPostal] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(0);
   const [secretPin, setSecretPin] = useState("");
   const [isSecretPinCorrect, setIsSecretPinCorrect] = useState(false);
 
@@ -87,38 +88,21 @@ const Registration = () => {
   const validSecretPin = "1234";
   return (
     <>
-      <div className="flex  items-center justify-center">
-        <div className="max-w-md w-full mx-auto">
-          <form onSubmit={submit} className="bg-white p-4 rounded-lg">
-            <h2 className="text-2xl mb-8">Register</h2>
-
-            {/* Add this input to your form */}
-            <div className="mb-4">
-              <label htmlFor="image" className="block">
-                Profile Image
-              </label>
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                onChange={(e) => handleImageUpload(e)}
-                className={`w-full p-2 border border-gray-300 focus:outline-none focus:border-blue-500 ${
-                  imageError ? "border-red-500" : ""
-                }`}
-                required
-              />
-              {imageError && (
-                <p className="text-sm text-red-500">{imageError}</p>
-              )}
-            </div>
-
-            {/* Username Input */}
+      <div className="container mx-auto py-10 max-w-3xl">
+        <form onSubmit={submit} className="bg-white p-4 rounded-2xl border m-2">
+          <h2 className="text-2xl font-semibold leading-7 text-gray-900 mb-1">
+            Register
+          </h2>
+          <p className="label-text text-sm mb-3 leading-6 text-gray-600">
+            Basic information
+          </p>
+          <div className="grid gap-4 label-text sm:grid-cols-2">
             <div
-              className={`mb-4 ${
+              className={`label-text ${
                 errors?.username?.length ? "text-red-500" : ""
               }`}
             >
-              <label htmlFor="username" className="block">
+              <label htmlFor="username" className="label-text">
                 Username
               </label>
               <input
@@ -126,7 +110,7 @@ const Registration = () => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                className="input input-bordered w-full max-w-xs justify-end"
               />
               {errors?.username &&
                 errors.username.map((error, index) => (
@@ -142,9 +126,11 @@ const Registration = () => {
 
             {/* Email Input */}
             <div
-              className={`mb-4 ${errors?.email?.length ? "text-red-500" : ""}`}
+              className={`label-text ${
+                errors?.email?.length ? "text-red-500" : ""
+              }`}
             >
-              <label htmlFor="email" className="block">
+              <label htmlFor="email" className="label-text">
                 Email Address
               </label>
               <input
@@ -152,7 +138,7 @@ const Registration = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                className="input input-bordered w-full max-w-xs"
               />
               {errors?.email &&
                 errors.email.map((error, index) => (
@@ -168,11 +154,11 @@ const Registration = () => {
 
             {/* First Name Input */}
             <div
-              className={`mb-4 ${
+              className={`label-text ${
                 errors?.first_name?.length ? "text-red-500" : ""
               }`}
             >
-              <label htmlFor="firstName" className="block">
+              <label htmlFor="firstName" className="label-text">
                 First Name
               </label>
               <input
@@ -180,7 +166,7 @@ const Registration = () => {
                 type="text"
                 value={first_name}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                className="input input-bordered w-full max-w-xs"
               />
               {errors?.first_name &&
                 errors.first_name.map((error, index) => (
@@ -196,11 +182,11 @@ const Registration = () => {
 
             {/* Last Name Input */}
             <div
-              className={`mb-4 ${
+              className={`label-text ${
                 errors?.last_name?.length ? "text-red-500" : ""
               }`}
             >
-              <label htmlFor="lastName" className="block">
+              <label htmlFor="lastName" className="label-text">
                 Last Name
               </label>
               <input
@@ -208,7 +194,7 @@ const Registration = () => {
                 type="text"
                 value={last_name}
                 onChange={(e) => setLastName(e.target.value)}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                className="input input-bordered w-full max-w-xs"
               />
               {errors?.last_name &&
                 errors.last_name.map((error, index) => (
@@ -224,11 +210,11 @@ const Registration = () => {
 
             {/* Phone Number Input */}
             <div
-              className={`mb-4 ${
+              className={`label-text ${
                 errors?.phoneNum?.length ? "text-red-500" : ""
               }`}
             >
-              <label htmlFor="phoneNum" className="block">
+              <label htmlFor="phoneNum" className="label-text">
                 Phone Number
               </label>
               <input
@@ -236,7 +222,7 @@ const Registration = () => {
                 type="text"
                 value={phoneNum}
                 onChange={(e) => setPhoneNum(e.target.value)}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                className="input input-bordered w-full max-w-xs"
               />
               {errors?.phoneNum &&
                 errors.phoneNum.map((error, index) => (
@@ -249,24 +235,8 @@ const Registration = () => {
                   </p>
                 ))}
             </div>
-
-            {/* Address Input */}
-            <div className="mb-4">
-              <label htmlFor="address" className="block">
-                Address
-              </label>
-              <input
-                id="address"
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
-              />
-            </div>
-
-            {/* Postal Input */}
-            <div className="mb-4">
-              <label htmlFor="postal" className="block">
+            <div className="block">
+              <label htmlFor="postal" className="label-text">
                 Postal Code
               </label>
               <input
@@ -274,47 +244,30 @@ const Registration = () => {
                 type="text"
                 value={postal}
                 onChange={(e) => setPostal(e.target.value)}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            {/* Admin Checkbox */}
-            <div className="mb-4">
-              <label className="block">
-                Is Admin?
-                <input
-                  type="checkbox"
-                  checked={isAdmin}
-                  onChange={(e) => setIsAdmin(e.target.checked)}
-                  className="ml-2"
-                  disabled={!isSecretPinCorrect}
-                />
-              </label>
-            </div>
-            {/* Secret Pin Input */}
-            <div className="mb-4">
-              <label htmlFor="secretPin" className="block">
-                Secret Pin
-              </label>
-              <input
-                id="secretPin"
-                type="password"
-                value={secretPin}
-                onChange={(e) => {
-                  const enteredPin = e.target.value;
-                  setSecretPin(enteredPin);
-                  setIsSecretPinCorrect(enteredPin === validSecretPin);
-                }}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                className="input input-bordered w-full max-w-xs"
               />
             </div>
 
-            {/* Password Input */}
+            {/* Address Input */}
+            <div className="block col-span-1 md:col-span-2">
+              <label htmlFor="address" className="label-text">
+                Address
+              </label>
+              <input
+                id="address"
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="input input-bordered w-full"
+              />
+            </div>
+
             <div
-              className={`mb-4 ${
+              className={`label-text ${
                 errors?.password?.length ? "text-red-500" : ""
               }`}
             >
-              <label htmlFor="password" className="block">
+              <label htmlFor="password" className="label-text">
                 Password
               </label>
               <input
@@ -322,7 +275,7 @@ const Registration = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                className="input input-bordered w-full max-w-xs"
               />
               {errors?.password?.map((error, index) => (
                 <p
@@ -337,11 +290,11 @@ const Registration = () => {
 
             {/* Password Confirmation Input */}
             <div
-              className={`mb-4 ${
+              className={`${
                 errors?.password_confirmation?.length ? "text-red-500" : ""
               }`}
             >
-              <label htmlFor="passwordConfirmation" className="block">
+              <label htmlFor="passwordConfirmation" className="label-text">
                 Confirm Password
               </label>
               <input
@@ -349,7 +302,7 @@ const Registration = () => {
                 type="password"
                 value={password_confirmation}
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                className="input input-bordered w-full max-w-xs"
               />
               {errors?.password_confirmation?.map((error, index) => (
                 <p
@@ -361,17 +314,79 @@ const Registration = () => {
                 </p>
               ))}
             </div>
-
-            <div className="flex justify-end">
+            <div className="col-span-1 md:col-span-2">
+              <label htmlFor="image" className="label-text">
+                Profile Image
+              </label>
+              <div className="w-full h-40 border-dashed border-2 border-gray-300 rounded-md flex items-center justify-center cursor-pointer">
+                <input
+                  type="file"
+                  id="image"
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload(e)}
+                  className={`file-input file-input-ghost w-full max-w-xs ${
+                    imageError ? "border-red-500" : ""
+                  }`}
+                  required
+                />
+              </div>
+              {imageError && (
+                <p className="text-sm text-red-500">{imageError}</p>
+              )}
+            </div>
+            <div className="col-span-1 md:col-span-2 ">
               <button
                 type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded"
+                className="btn btn-primary btn-block my-auto"
               >
                 Register
               </button>
             </div>
-          </form>
-        </div>
+
+            <div className="flex col-span-1 md:col-span-2 justify-between">
+              <div className="col-span-1 md:col-span-2 flex text-gray-100">
+                <label className="block">
+                  Is Admin?
+                  <input
+                    type="checkbox"
+                    checked={isAdmin}
+                    onChange={(e) => setIsAdmin(e.target.checked)}
+                    className="ml-2 checkbox"
+                    disabled={!isSecretPinCorrect}
+                  />
+                </label>
+              </div>
+              <div className="col-span-1 md:col-span-2 flex">
+                <label htmlFor="secretPin" className="label-text text-gray-100">
+                  Secret Pin
+                </label>
+                <input
+                  id="secretPin"
+                  type="password"
+                  value={secretPin}
+                  onChange={(e) => {
+                    const enteredPin = e.target.value;
+                    setSecretPin(enteredPin);
+                    setIsSecretPinCorrect(enteredPin === validSecretPin);
+                  }}
+                  className="input input-bordered w-full max-w-xs border-gray-100"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-row-reverse my-3">
+            <p className="text-sm font-light text-gray-800">
+              Already have an account?
+              <Link
+                to="/login"
+                className="pl-1 font-medium text-gray-800 hover:underline"
+              >
+                Login here
+              </Link>
+            </p>
+          </div>
+        </form>
       </div>
     </>
   );

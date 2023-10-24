@@ -56,28 +56,32 @@ const Orders = () => {
               ))}
             </select>
           </div>
-          <table className="w-full border-collapse table">
-            <thead>
-              <tr>
-                <th className="border p-2">Product Name</th>
-                <th className="border p-2 text-right">Price</th>
-                <th className="border p-2 text-right">Quantity</th>
-                <th className="border p-2 text-right">Total</th>
-                <th className="border p-2">Item Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.map((item, index) => (
-                <tr key={index}>
-                  <td className="border p-2">{item.product_name}</td>
-                  <td className="border p-2 text-right">{item.price}</td>
-                  <td className="border p-2 text-right">{item.quantity}</td>
-                  <td className="border p-2 text-right">{item.total}</td>
-                  <td className="border p-2">{item.item_type}</td>
+          {orders.length > 0 ? (
+            <table className="w-full border-collapse table">
+              <thead>
+                <tr>
+                  <th className="border p-2">Product Name</th>
+                  <th className="border p-2 text-right">Price</th>
+                  <th className="border p-2 text-right">Quantity</th>
+                  <th className="border p-2 text-right">Total</th>
+                  <th className="border p-2">Item Type</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {order.map((item, index) => (
+                  <tr key={index}>
+                    <td className="border p-2">{item.product_name}</td>
+                    <td className="border p-2 text-right">{item.price}</td>
+                    <td className="border p-2 text-right">{item.quantity}</td>
+                    <td className="border p-2 text-right">{item.total}</td>
+                    <td className="border p-2">{item.item_type}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <span className=" mx-auto loading loading-dots loading-lg"></span>
+          )}
 
           <h1 className="text-2xl mt-4">
             Total Price: ₱{totalPrice.toFixed(2)}

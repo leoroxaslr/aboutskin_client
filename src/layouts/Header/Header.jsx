@@ -254,7 +254,7 @@ const Header = () => {
           </div>
         </Dialog>
       </Transition.Root>
-      <div className="navbar bg-base-100 w-full mx-auto ">
+      <div className="navbar  w-full mx-auto text-gray-800 shadow-md ">
         <div className="navbar-start">
           <Link to="/" className="btn btn-ghost normal-case text-xl">
             AboutSkin
@@ -296,7 +296,7 @@ const Header = () => {
               className="btn btn-ghost btn-circle"
               onClick={getCartItems}
             >
-              <div className="indicator">
+              <div className="indicator z-0">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"
@@ -369,9 +369,9 @@ const Header = () => {
 
               <li>
                 {token ? (
-                  <Link to="/profile/orders">Settings</Link>
+                  <Link to="/profile/orders">Orders</Link>
                 ) : (
-                  <Link to="/login">Login to view Settings</Link>
+                  <Link to="/login">Login to view Orders</Link>
                 )}
               </li>
 

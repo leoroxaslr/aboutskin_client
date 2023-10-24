@@ -10,6 +10,8 @@ import Item from "./pages/Product/Item";
 import Checkout from "./pages/Checkout/Checkout";
 import Admin from "./pages/Profile/Settings/Admin";
 import ProcessOrder from "./pages/Profile/Settings/ProcessOrder";
+import UpdateProducts from "./pages/Profile/Settings/UpdateProducts";
+import AdminDash from "./pages/Profile/Settings/AdminDash";
 
 export const navRoutes = [
   {
@@ -66,6 +68,16 @@ export const profileRoute = {
       path: "admin/orders",
       name: "Admin",
       element: <ProcessOrder />,
+    },
+    {
+      path: "admin/update",
+      name: "Admin",
+      element: <UpdateProducts />,
+    },
+    {
+      path: "admin/dashboard",
+      name: "Admin",
+      element: <AdminDash />,
     },
     {
       path: "orders",

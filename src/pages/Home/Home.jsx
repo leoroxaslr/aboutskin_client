@@ -2,9 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import http from "../../lib/http";
 import HeroIMG from "../../assets/images/Hero/Heroimage.svg";
-import Toast from "../../components/Toast";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const Home = () => {
   const imageLink = import.meta.env.VITE_API;
@@ -13,7 +13,6 @@ const Home = () => {
   });
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     getFilteredProducts(null);
@@ -34,9 +33,10 @@ const Home = () => {
         await api.post("/cart", body);
         window.dispatchEvent(new Event("getCartItems"));
         console.log("productId");
-        setShowToast(true);
+        toast.success("Item added to the cart");
       } catch (e) {
         console.log(e);
+        toast.error("Failed to add item to the cart");
       }
     } else {
       navigate("/login");
@@ -55,37 +55,7 @@ const Home = () => {
 
   return (
     <>
-      <div>
-        {showToast && (
-          <Toast
-            message={
-              <div className="alert shadow-lg">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  className="stroke-info shrink-0 w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
-                <div>
-                  <h3 className="font-bold">Added to Cart!</h3>
-                  <div className="text-xs">
-                    The item has been added to your cart.
-                  </div>
-                </div>
-              </div>
-            }
-            onClose={() => setShowToast(false)}
-          />
-        )}
-      </div>
-
+      <ToastContainer />
       <div
         className="hero min-h-[500px]"
         style={{
@@ -93,18 +63,17 @@ const Home = () => {
         }}
       >
         <div className="hero-overlay bg-opacity-80 "></div>
-        <div className="hero-content text-center text-neutral-content ">
-          <div className="max-w-md">
-            <h1 className="mb-5 text-5xl font-bold">
+        <div className="hero-content text-neutral-content ">
+          <div className="max-w-">
+            <h1 className="mb-5 text-8xl font-bold text-base-100 text-left w-10/12">
               Discover your best skin yet!
             </h1>
-            <p className="mb-5 ">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
-              et a id nisi.
+            <p className="mb-5 text-base-100  ">
+              Constantly transforming and elevating the beauty shopping
+              experience.
             </p>
             <Link to="/store">
-              <button className="btn border-none btn-wide shadow-md transition-all  duration-700 bg-gradient-to-tl from-primary via-secondary to-primary bg-size-200 bg-pos-0 hover:bg-pos-100">
+              <button className="btn border-none  btn-wide shadow-md bg-secondary hover:bg-accent">
                 Shop Now
               </button>
             </Link>
@@ -199,7 +168,7 @@ const Home = () => {
           </div>
           <div className=" justify-center flex mx-auto pt-4">
             <Link to="/store">
-              <button className="btn border-none  btn-wide shadow-md transition-all duration-700 bg-gradient-to-tl from-primary via-secondary to-primary bg-size-200 bg-pos-0 hover:bg-pos-100">
+              <button className="btn border-none btn-wide shadow-md bg-secondary hover:bg-accent">
                 Show more
               </button>
             </Link>

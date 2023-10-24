@@ -33,54 +33,54 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex h-screen items-center justify-center">
-        <div className="max-w-md w-full mx-auto">
-          <form onSubmit={submit} className="bg-white p-4 rounded-lg">
-            <h2 className="text-2xl mb-8">Login</h2>
-
-            <div className="mb-4">
-              <label htmlFor="username" className="block">
-                Username
+      <div className="hero min-h-screen">
+        <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 border">
+          <form onSubmit={submit} className="card-body">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Username</span>
               </label>
               <input
                 id="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                className="input input-bordered"
+                required
               />
             </div>
-
-            <div className="mb-4">
-              <label htmlFor="password" className="block">
-                Password
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Password</span>
               </label>
               <input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded p-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                className="input input-bordered"
+                required
               />
+              <label className="label">
+                <a href="#" className="label-text-alt link link-hover">
+                  Forgot password?
+                </a>
+              </label>
             </div>
-
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded"
-              >
+            <div className="form-control mt-6">
+              <button type="submit" className="btn btn-primary btn-block">
                 Login
               </button>
             </div>
-            <div className="flex justify-end">
+            <p className="text-sm font-light text-gray-800">
+              Don’t have an account yet?
               <Link
-                as={Link}
                 to="/register"
                 className="pl-1 font-medium text-gray-800 hover:underline"
               >
-                Login here
+                Sign up
               </Link>
-            </div>
+            </p>
           </form>
         </div>
       </div>

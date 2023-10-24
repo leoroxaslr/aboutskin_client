@@ -1,11 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import http from "../../lib/http";
-import Toast from "../../components/Toast";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Pagination from "../../components/Pagination";
+import { toast, ToastContainer } from "react-toastify";
 
 const Level2 = () => {
   const api = http({
@@ -27,7 +27,6 @@ const Level2 = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchQuery = searchParams.get("q");
-  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     getCategories();
@@ -103,10 +102,10 @@ const Level2 = () => {
         };
         await api.post("/cart", body);
         window.dispatchEvent(new Event("getCartItems"));
-        console.log("productId");
-        setShowToast(true);
+        toast.success("Item added to the cart");
       } catch (e) {
         console.log(e);
+        toast.error("Failed to add item to the cart");
       }
     } else {
       navigate("/login");
@@ -131,36 +130,7 @@ const Level2 = () => {
 
   return (
     <>
-      <div>
-        {showToast && (
-          <Toast
-            message={
-              <div className="alert shadow-lg">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  className="stroke-info shrink-0 w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
-                <div>
-                  <h3 className="font-bold">Added to Cart!</h3>
-                  <div className="text-xs">
-                    The item has been added to your cart.
-                  </div>
-                </div>
-              </div>
-            }
-            onClose={() => setShowToast(false)}
-          />
-        )}
-      </div>
+      <ToastContainer />
       <div className="container md:mx-auto p-4 md:flex ">
         <div className="w-full p-4 sm:w-2/5 md:w-2/5 lg:w-1/5 xl:w-1/5">
           <h2 className="text-xl font-bold tracking-tight text-gray-900 flex">
