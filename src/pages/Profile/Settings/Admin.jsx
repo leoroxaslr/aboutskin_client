@@ -24,7 +24,6 @@ const Admin = () => {
     rating: 0,
     category_id: 1,
     image: null,
-    xw,
   });
 
   const [categories, setCategories] = useState([]);
