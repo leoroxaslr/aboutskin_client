@@ -23,7 +23,8 @@ const Admin = () => {
     stock: 0,
     rating: 0,
     category_id: 1,
-    image: null, // Change the initial value to null
+    image: null,
+    xw,
   });
 
   const [categories, setCategories] = useState([]);
@@ -63,7 +64,6 @@ const Admin = () => {
       formData.append("rating", product.rating);
       formData.append("category_id", product.category_id);
 
-      // Append the image to the FormData
       if (product.image) {
         formData.append("image", product.image);
       }
@@ -83,7 +83,7 @@ const Admin = () => {
         stock: 0,
         rating: 0,
         category_id: 1,
-        image: null, // Reset the image field
+        image: null,
       });
       toast.success(response.data.message);
     } catch (error) {
@@ -100,7 +100,6 @@ const Admin = () => {
       const imageUrl = URL.createObjectURL(file);
       setImagePreview(imageUrl);
 
-      // Update the 'product' object if it exists in your component state
       if (product) {
         setProduct({
           ...product,
@@ -111,7 +110,6 @@ const Admin = () => {
       setSelectedImage(null);
       setImagePreview(null);
 
-      // Clear the image in the 'product' object if it exists in your component state
       if (product) {
         setProduct({
           ...product,
@@ -299,9 +297,9 @@ const Admin = () => {
                 className="file-input file-input-ghost w-full max-w-xs"
                 ref={fileInputRef}
               />
-              {product.image ? ( // Check if product.image is set
+              {product.image ? (
                 <img
-                  src={URL.createObjectURL(product.image)} // Display the uploaded image
+                  src={URL.createObjectURL(product.image)}
                   alt="Product Image"
                   className="w-24 h-24 aspect-square object-cover rounded-sm"
                 />

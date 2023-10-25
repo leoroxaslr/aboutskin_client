@@ -100,7 +100,7 @@ const Home = () => {
                         alt={product.name}
                         loading="lazy"
                         className="w-full h-full object-cover rounded-sm"
-                      />{" "}
+                      />
                     </Link>
                     <div className="flex justify-between">
                       <div className="pt-1">
@@ -140,9 +140,9 @@ const Home = () => {
                           ? `${imageLink}/public/${product.image}`
                           : ""
                       }
-                      alt={product.image}
+                      alt={product.name}
                       loading="lazy"
-                      className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                      className="w-full h-full object-cover rounded-sm"
                     />
                   </Link>
                 </div>

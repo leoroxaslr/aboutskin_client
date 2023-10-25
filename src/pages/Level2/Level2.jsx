@@ -346,7 +346,7 @@ const Level2 = () => {
                               ? `${imageLink}/public/${product.image}`
                               : ""
                           }
-                          alt={product.image}
+                          alt=""
                           loading="lazy"
                           className="h-full w-full object-cover object-center group-hover:opacity-75 rounded-xl"
                         />

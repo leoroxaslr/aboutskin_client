@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import EditProductForm from "./EditProductForm";
+import React, { useState, useEffect, useRef } from "react";
 import http from "../../../lib/http";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -73,18 +72,50 @@ const UpdateProducts = () => {
     setIsModalOpen(false);
   };
 
-  const handleProductUpdate = async (updatedProduct) => {
+  const handleUpdate = async (editedProduct) => {
     try {
+      let formData = new FormData();
+      formData.append("name", editedProduct.name);
+      formData.append("brand", editedProduct.brand);
+      formData.append("description", editedProduct.description);
+      formData.append("description_long", editedProduct.description_long);
+      formData.append("price", editedProduct.price);
+      formData.append("stock", editedProduct.stock);
+      formData.append("rating", editedProduct.rating);
+      formData.append("category_id", editedProduct.category_id);
+
+      if (editedProduct.image) {
+        formData.append("image", editedProduct.image);
+      }
+
       const response = await api.put(
-        `/products/${updatedProduct.id}`,
-        updatedProduct
+        `/products/${editedProduct.id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
-      console.log("Product updated:", response.data);
-
+      toast.success(response.data.message);
       handleEditCancel();
     } catch (error) {
-      console.error("Error updating product", error);
+      console.error("API Error:", error);
+      toast.error("Failed to update the product.");
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setSelectedProduct({
+        ...selectedProduct,
+        image: file,
+        imagePreview: imageUrl,
+      });
     }
   };
 
@@ -194,7 +225,6 @@ const UpdateProducts = () => {
           </ul>
         </div>
       </div>
-
       {selectedProduct && (
         <div
           id="editProductModal"
@@ -221,9 +251,10 @@ const UpdateProducts = () => {
             </div>
             <EditProductForm
               product={selectedProduct}
-              onUpdate={handleProductUpdate}
               onCancel={handleEditCancel}
+              onUpdate={handleUpdate}
               categories={categories}
+              handleFileChange={handleFileChange}
             />
           </div>
         </div>

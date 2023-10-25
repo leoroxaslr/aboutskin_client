@@ -24,11 +24,9 @@ const Item = () => {
       const response = await api.get(`/products/${id}`);
       setProduct(response.data);
       setRatingData(response.data);
-
       const originalstock = response.data.stock;
       const trimmedstock = Math.floor(originalstock);
       setStock(trimmedstock);
-      console.error(response.data);
     } catch (e) {
       console.error("Error fetching product:", e);
     } finally {

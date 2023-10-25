@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import http from "../../../lib/http";
-import { CSVLink } from "react-csv"; // Import CSVLink
+import { CSVLink } from "react-csv";
 
 const ProcessOrder = () => {
   const api = http({
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   });
   const [orders, setOrders] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(""); // State to store selected date
+  const [selectedDate, setSelectedDate] = useState("");
   const [order, setOrder] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    // Fetch orders when the component mounts
     getOrders();
   }, []);
 
@@ -27,7 +26,6 @@ const ProcessOrder = () => {
 
     const filteredOrders = orders[selectedValue] || [];
 
-    // Calculate the total price for the filtered orders
     const total = filteredOrders.reduce((acc, item) => acc + item.total, 0);
     setTotalPrice(total);
 
@@ -117,7 +115,7 @@ const ProcessOrder = () => {
         <CSVLink
           data={formatDataForCSV()}
           filename={"orders.csv"}
-          className="export-csv-link btn btn-accent my-3 " // Add CSS class for styling
+          className="export-csv-link btn btn-accent my-3 "
         >
           Export to CSV
         </CSVLink>

@@ -23,15 +23,7 @@ const EditProductForm = ({ product, onUpdate, onCancel, categories }) => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    console.log("Update button clicked");
 
-    const { name, value } = e.target;
-    setEditedProduct({
-      ...editedProduct,
-      [name]: value,
-    });
-
-    // Check if any changes were made before updating
     if (JSON.stringify(product) === JSON.stringify(editedProduct)) {
       onCancel();
       return;
