@@ -190,7 +190,7 @@ const UpdateProducts = () => {
                 <td className="px-6 py-4 whitespace-nowrap">{product.price}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    onClick={() => openModal(product)}
+                    // onClick={() => openModal(product)}
                     className="btn btn-warning btn-sm mx-1"
                   >
                     Edit

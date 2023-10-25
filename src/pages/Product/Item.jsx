@@ -172,7 +172,11 @@ const Item = () => {
                     className="group"
                   >
                     <img
-                      src={product.image}
+                      src={
+                        product.image
+                          ? `${imageLink}/public/${product.image}`
+                          : ""
+                      }
                       alt={product.image}
                       loading="lazy"
                       className="h-full w-full object-cover object-center group-hover:opacity-75 rounded-xl"

@@ -14,6 +14,7 @@ const Header = () => {
   const [numberOfItemsInCart, setNumberOfItemsInCart] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [open, setOpen] = useState(false);
+  const imageLink = import.meta.env.VITE_API;
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -152,8 +153,12 @@ const Header = () => {
                                   <li key={product.id} className="flex py-6">
                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                       <img
-                                        src={product.image}
-                                        alt={product.image}
+                                        src={
+                                          product.image
+                                            ? `${imageLink}/public/${product.image}`
+                                            : ""
+                                        }
+                                        alt=""
                                         className="h-full w-full object-cover object-center"
                                       />
                                     </div>
